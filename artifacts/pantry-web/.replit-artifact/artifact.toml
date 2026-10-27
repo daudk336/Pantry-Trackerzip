@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Pantry Tracker"
+description = "A small pantry inventory app where members manage their own items and administrators can review everyone's inventory."
+version = "1.0.0"
+id = "artifacts/pantry-web"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21207
+
+[services.development]
+run = "pnpm --filter @workspace/pantry-web run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/pantry-web", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/pantry-web/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21207"
+BASE_PATH = "/"
